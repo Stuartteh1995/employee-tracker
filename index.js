@@ -21,7 +21,7 @@ function startApp() {
         type: 'list',
         message: 'What would you like to do?',
         choices: [
-          'View all departments',
+        //   'View all departments', 
           'View all roles',
           'View all employees',
           'Add a department',
@@ -61,14 +61,6 @@ function startApp() {
       });
   }
 
-  function viewAllDepartments() {
-    const query = 'SELECT * FROM department';
-    connection.query(query, function(err, res) {
-      if (err) throw err;
-      console.table(res);
-      startApp();
-    });
-  }
   function addDepartment() {
     inquirer
       .prompt({
