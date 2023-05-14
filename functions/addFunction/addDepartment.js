@@ -1,19 +1,24 @@
 const inquirer = require('inquirer');
-const mysql = require('mysql2');
 const connection = require('./connection');
 
 function addDepartment() {
-  return inquirer
-    .prompt({
-      name: 'departmentName',
-      type: 'input',
-      message: 'Enter the name of the department:'
-    })
+    return inquirer
+    .prompt([
+      {
+        name: 'id',
+        type: 'input',
+        message: 'Enter the Department ID'
+      },
+      {
+        name: 'name',
+        type: 'input',
+        message: 'Enter the Department Name'}
+    ])
     .then(function(answer) {
-      const query = 'INSERT INTO department (name) VALUES (?)';
-      return connection.query(query, answer.departmentName, function(err, res) {
+      const query = 'INSERT INTO department (id,name) VALUES (?,?)';
+      return connection.query(query, [answer.id,answer.name], function(err, res) {
         if (err) throw err;
-        console.log(`${answer.departmentName} was added to departments.`);
+        console.log(`${answer.name} was added to departments.`);
       });
     });
 }
