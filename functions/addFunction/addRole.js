@@ -1,38 +1,41 @@
 const inquirer = require('inquirer');
 const connection = require('../../connection');
 
-function addRole(startApp) {
-  return inquirer
-    .prompt([
-      {
-        name: 'id',
-        type: 'input',
-        message: 'Enter the ID of the role:'
-      },
-      {
-        name: 'title',
-        type: 'input',
-        message: 'Enter the title of the role:'
-      },
-      {
-        name: 'salary',
-        type: 'input',
-        message: 'Enter the salary for the role:'
-      },
-      {
-        name: 'departmentId',
-        type: 'input',
-        message: 'Enter the department id for the role:'
-      }
-    ])
-    .then(function(answer) {
+async function addRole() {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const answers = await inquirer.prompt([
+        {
+          name: 'id',
+          type: 'input',
+          message: 'Enter the ID of the role:'
+        },
+        {
+          name: 'title',
+          type: 'input',
+          message: 'Enter the title of the role:'
+        },
+        {
+          name: 'salary',
+          type: 'input',
+          message: 'Enter the salary for the role:'
+        },
+        {
+          name: 'departmentId',
+          type: 'input',
+          message: 'Enter the department id for the role:'
+        }
+      ]);
+
       const query = 'INSERT INTO role (id, title, salary, department_id) VALUES (?, ?, ?, ?)';
-      return connection.query(query, [answer.id, answer.title, answer.salary, answer.departmentId], function(err, res) {
-        if (err) throw err;
-        console.log(`${answer.title} role was added.`);
-        startApp()
-      });
-    });
+      const conn = await connection;
+      const [rows] = await conn.query(query, [answers.id, answers.title, answers.salary, answers.departmentId]);
+      console.log(`${answers.title} role was added.`);
+      resolve();
+    } catch (err) {
+      reject(err);
+    }
+  });
 }
 
 module.exports = addRole;

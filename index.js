@@ -1,5 +1,5 @@
 const inquirer = require('inquirer');
-const mysql = require('mysql2');
+const mysql = require('mysql2/promise');  // Make sure you import promise version
 
 const addDepartment = require('./functions/addFunction/addDepartment.js');
 const addEmployee = require('./functions/addFunction/addEmployee.js');
@@ -11,13 +11,11 @@ const viewAllRoles = require('./functions/viewFunction/viewAllRoles.js');
 
 const updateEmployeeData = require('./functions/updateFunction/updateEmployee.js');
 
-
 const connection = require('./connection.js');
 
-connection.connect(function(err) {
-  if (err) throw err;
-  startApp();
-});
+// Removed the connection.connect() call here
+
+startApp();
 
 function startApp() {
     inquirer
@@ -39,34 +37,45 @@ function startApp() {
       .then(function(answer) {
         switch (answer.action) {
           case 'View all departments':
-              viewAllDepartments(connection, startApp);
-              break;
+            viewAllDepartments()
+            .then(() => startApp())
+            .catch(err => console.log(err));
+            break;
           case 'View all roles':
-              viewAllRoles(connection, startApp);
+              viewAllRoles()
+              .then(() => startApp())
+            .catch(err => console.log(err));
               break;
           case 'View all employees':
-              viewAllEmployees(connection, startApp);
-              break;
-          case 'Add a department':
-              addDepartment(connection, startApp)
+              viewAllEmployees()
               .then(() => startApp())
-              .catch(err => console.log(err));
+            .catch(err => console.log(err));
               break;
-          case 'Add a role':
-              addRole(connection, startApp)
-              .then(() => startApp())
-              .catch(err => console.log(err));
-              break;
-          case 'Add an employee':
-              addEmployee(connection, startApp)
-              .then(() => startApp())
-              .catch(err => console.log(err));
-              break;
-          case 'Update an employee role':
-              updateEmployeeData(connection, startApp)
-              .then(() => startApp())
-              .catch(err => console.log(err));
-              break;
+              case 'Add a department':
+                addDepartment()
+                .then(() => startApp()) 
+                .catch(err => console.log(err));
+                break;
+              
+                
+             case 'Add an employee':
+                  addEmployee()
+                  .then(() => startApp())
+                  .catch(err => console.log(err));
+                  break;
+              
+                  case 'Add a role':
+                    addRole()
+                    .then(() => startApp())
+                    .catch(err => console.log(err));
+                    break;
+                
+                    case 'Update an employee role':
+                      updateEmployeeData()
+                      .then(() => startApp())
+                      .catch(err => console.log(err));
+                      break;
+                  
           case 'Exit':
               connection.end();
               break;

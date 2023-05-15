@@ -1,11 +1,16 @@
-const mysql = require('mysql2');
+const mysql = require('mysql2/promise');
 
-const connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: '12345',
-  database: 'employee_tracker_db'
-});
+let connection;
 
-module.exports = connection;
+async function initializeConnection() {
+  connection = await mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: '12345',
+    database: 'employee_tracker_db'
+  });
+}
 
+initializeConnection().catch(err => console.error(err));
+
+module.exports = () => connection;
