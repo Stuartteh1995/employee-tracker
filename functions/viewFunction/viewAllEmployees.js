@@ -1,8 +1,10 @@
+//create connection to access database
 const getConnection = require('../../connection.js');
 
 async function viewAllEmployees() {
   try {
     const connection = getConnection();
+    //selects table from employee but also addes other information like managar and data from othe tables
     const query = `
     SELECT 
         e.id,
@@ -28,4 +30,5 @@ async function viewAllEmployees() {
   }
 }
 
+//export data
 module.exports = viewAllEmployees;

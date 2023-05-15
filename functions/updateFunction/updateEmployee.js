@@ -1,7 +1,10 @@
+//creates the connection to access database and to inquirer
 const inquirer = require('inquirer');
 const connection = require('../../connection');
 
+//prompts user who selects add department 
 async function updateEmployeeData() {
+  //waits for the prompt to end before returning data
   return new Promise(async (resolve, reject) => {
     try {
       const answers = await inquirer.prompt([
@@ -26,8 +29,9 @@ async function updateEmployeeData() {
           message: 'Enter the new Role ID:'
         }
       ]);
-
+//updates database
       const query = 'UPDATE employee SET first_name = ?, last_name = ?, role_id = ? WHERE id = ?';
+      //creates the connection to the database to send information 
       const conn = await connection ();
       const [rows] = await conn.query(query, [answers.newFirstName, answers.newLastName, answers.newRoleId, answers.employeeId]);
       console.log(`Employee with ID ${answer.employeeId} was updated.`);
@@ -37,5 +41,5 @@ async function updateEmployeeData() {
     }
   });
 }
-
+//exports data
 module.exports = updateEmployeeData;

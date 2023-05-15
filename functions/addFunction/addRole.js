@@ -1,6 +1,8 @@
+//creates the connection to access database and to inquirer
 const inquirer = require('inquirer');
 const connection = require('../../connection');
 
+//prompts user who selects add department 
 async function addRole() {
   return new Promise(async (resolve, reject) => {
     try {
@@ -26,8 +28,9 @@ async function addRole() {
           message: 'Enter the department id for the role:'
         }
       ]);
-
+      //inserts user input to the database
       const query = 'INSERT INTO role (id, title, salary, department_id) VALUES (?, ?, ?, ?)';
+      //creates the connection to the database to send information 
       const conn = await connection();
       const [rows] = await conn.query(query, [answers.id, answers.title, answers.salary, answers.departmentId]);
       console.log(`${answers.title} role was added.`);
@@ -38,4 +41,5 @@ async function addRole() {
   });
 }
 
+//exports data
 module.exports = addRole;

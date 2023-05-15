@@ -1,3 +1,4 @@
+//create a const for connection information to access the database
 const mysql = require('mysql2/promise');
 
 let connection;

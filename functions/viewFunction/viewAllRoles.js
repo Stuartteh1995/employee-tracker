@@ -1,8 +1,10 @@
+//create connection to access database
 const getConnection = require('../../connection.js');
 
 async function viewAllRoles() {
   try {
     const connection = getConnection();
+        //selects table from role but also addes other information like managar and data from othe tables
     const query = `
     SELECT 
         r.id,
@@ -22,4 +24,5 @@ async function viewAllRoles() {
   }
 }
 
+//export data
 module.exports = viewAllRoles;
