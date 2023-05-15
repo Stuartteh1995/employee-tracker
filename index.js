@@ -1,18 +1,23 @@
-const mysql = require('mysql2');
 const inquirer = require('inquirer');
+const mysql = require('mysql2');
 
-const connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: '12345',
-  database: 'myDatabase'
-});
+const addDepartment = require('./functions/addFunction/addDepartment.js');
+const addEmployee = require('./functions/addFunction/addEmployee.js');
+const addRole = require('./functions/addFunction/addRole.js');
+
+const viewAllDepartments = require('./functions/viewFunction/viewAllDepartments.js');
+const viewAllEmployees = require('./functions/viewFunction/viewAllEmployees.js');
+const viewAllRoles = require('./functions/viewFunction/viewAllRoles.js');
+
+const updateEmployeeData = require('./functions/updateFunction/updateEmployee.js');
+
+
+const connection = require('./connection.js');
 
 connection.connect(function(err) {
   if (err) throw err;
   startApp();
 });
-
 
 function startApp() {
     inquirer
@@ -21,7 +26,7 @@ function startApp() {
         type: 'list',
         message: 'What would you like to do?',
         choices: [
-        //   'View all departments', 
+          'View all departments',
           'View all roles',
           'View all employees',
           'Add a department',
@@ -34,47 +39,38 @@ function startApp() {
       .then(function(answer) {
         switch (answer.action) {
           case 'View all departments':
-            viewAllDepartments();
-            break;
+              viewAllDepartments(connection, startApp);
+              break;
           case 'View all roles':
-            viewAllRoles();
-            break;
+              viewAllRoles(connection, startApp);
+              break;
           case 'View all employees':
-            viewAllEmployees();
-            break;
+              viewAllEmployees(connection, startApp);
+              break;
           case 'Add a department':
-            addDepartment();
-            break;
+              addDepartment(connection, startApp)
+              .then(() => startApp())
+              .catch(err => console.log(err));
+              break;
           case 'Add a role':
-            addRole();
-            break;
+              addRole(connection, startApp)
+              .then(() => startApp())
+              .catch(err => console.log(err));
+              break;
           case 'Add an employee':
-            addEmployee();
-            break;
+              addEmployee(connection, startApp)
+              .then(() => startApp())
+              .catch(err => console.log(err));
+              break;
           case 'Update an employee role':
-            updateEmployeeRole();
-            break;
+              updateEmployeeData(connection, startApp)
+              .then(() => startApp())
+              .catch(err => console.log(err));
+              break;
           case 'Exit':
-            connection.end();
-            break;
+              connection.end();
+              break;
         }
       });
   }
-
-  function addDepartment() {
-    inquirer
-      .prompt({
-        name: 'departmentName',
-        type: 'input',
-        message: 'Enter the name of the department:'
-      })
-      .then(function(answer) {
-        const query = 'INSERT INTO department (name) VALUES (?)';
-        connection.query(query, answer.departmentName, function(err, res) {
-          if (err) throw err;
-          console.log(`${answer.departmentName} was added to departments.`);
-          startApp();
-        });
-      });
-  }
-    
+  module.exports = startApp;
