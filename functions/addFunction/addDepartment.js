@@ -1,31 +1,28 @@
-
 const inquirer = require('inquirer');
-const connection = require('../../connection');
+const connection = require('../../connection.js');
 
 async function addDepartment() {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const answers = await inquirer.prompt([
-        {
-          name: 'id',
-          type: 'input',
-          message: 'Enter the Department ID'
-        },
-        {
-          name: 'name',
-          type: 'input',
-          message: 'Enter the Department Name'
-        }
-      ]);
+  try {
+    const answers = await inquirer.prompt([
+      {
+        name: 'id',
+        type: 'input',
+        message: 'Enter the Department ID'
+      },
+      {
+        name: 'name',
+        type: 'input',
+        message: 'Enter the Department Name'
+      }
+    ]);
 
-      const query = 'INSERT INTO department (id, name) VALUES (?, ?)';
-      const conn = await connection;
-      const [rows] = await conn.query(query, [answers.id, answers.name]);
-      console.log(`${answers.name} was added to departments.`);
-      resolve();
-    } catch (err) {
-      reject(err);
-    }
-  });
+    const query = 'INSERT INTO department (id, name) VALUES (?, ?)';
+    const conn = await connection();
+    const [rows] = await conn.query(query, [answers.id, answers.name]);
+    console.log(`${answers.name} was added to departments.`);
+  } catch (err) {
+    console.error(err);
+  }
 }
+
 module.exports = addDepartment;

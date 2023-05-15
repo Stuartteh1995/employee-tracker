@@ -28,7 +28,7 @@ async function updateEmployeeData() {
       ]);
 
       const query = 'UPDATE employee SET first_name = ?, last_name = ?, role_id = ? WHERE id = ?';
-      const conn = await connection;
+      const conn = await connection ();
       const [rows] = await conn.query(query, [answers.newFirstName, answers.newLastName, answers.newRoleId, answers.employeeId]);
       console.log(`Employee with ID ${answer.employeeId} was updated.`);
       resolve();

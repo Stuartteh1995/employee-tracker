@@ -33,7 +33,7 @@ async function addEmployee() {
       ]);
 
       const query = 'INSERT INTO employee (id, first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?, ?)';
-      const conn = await connection;
+      const conn = await connection();
       const [rows] = await conn.query(query, [answers.id, answers.first_name, answers.last_name, answers.role_id, answers.manager_id]);
       console.log(`${answers.first_name} was added to Employee.`);
       resolve();

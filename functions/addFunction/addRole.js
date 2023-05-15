@@ -28,7 +28,7 @@ async function addRole() {
       ]);
 
       const query = 'INSERT INTO role (id, title, salary, department_id) VALUES (?, ?, ?, ?)';
-      const conn = await connection;
+      const conn = await connection();
       const [rows] = await conn.query(query, [answers.id, answers.title, answers.salary, answers.departmentId]);
       console.log(`${answers.title} role was added.`);
       resolve();

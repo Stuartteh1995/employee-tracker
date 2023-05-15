@@ -1,9 +1,10 @@
 const inquirer = require('inquirer');
-const mysql = require('mysql2/promise');  // Make sure you import promise version
+const mysql = require('mysql2/promise'); 
 
 const addDepartment = require('./functions/addFunction/addDepartment.js');
 const addEmployee = require('./functions/addFunction/addEmployee.js');
 const addRole = require('./functions/addFunction/addRole.js');
+
 
 const viewAllDepartments = require('./functions/viewFunction/viewAllDepartments.js');
 const viewAllEmployees = require('./functions/viewFunction/viewAllEmployees.js');
@@ -13,7 +14,6 @@ const updateEmployeeData = require('./functions/updateFunction/updateEmployee.js
 
 const connection = require('./connection.js');
 
-// Removed the connection.connect() call here
 
 startApp();
 
