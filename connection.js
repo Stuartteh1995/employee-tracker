@@ -7,7 +7,7 @@ async function initializeConnection() {
   connection = await mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: '12345',
+    password: '',
     database: 'employee_tracker_db'
   });
 }
