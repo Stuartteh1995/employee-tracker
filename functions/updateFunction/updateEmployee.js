@@ -29,17 +29,19 @@ async function updateEmployeeData() {
           message: 'Enter the new Role ID:'
         }
       ]);
-//updates database
+
+      //updates database
       const query = 'UPDATE employee SET first_name = ?, last_name = ?, role_id = ? WHERE id = ?';
       //creates the connection to the database to send information 
-      const conn = await connection ();
+      const conn = await connection();
       const [rows] = await conn.query(query, [answers.newFirstName, answers.newLastName, answers.newRoleId, answers.employeeId]);
-      console.log(`Employee with ID ${answer.employeeId} was updated.`);
+      console.log(`Employee with ID ${answers.employeeId} was updated.`);
       resolve();
     } catch (err) {
       reject(err);
     }
   });
 }
+
 //exports data
 module.exports = updateEmployeeData;
